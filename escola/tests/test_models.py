@@ -1,5 +1,5 @@
 from django.test import TestCase
-from escola.models import Estudante
+from escola.models import Estudante, Curso
 
 class ModelEstudanteTestCase(TestCase):
     # def teste_falha(self):
@@ -20,3 +20,17 @@ class ModelEstudanteTestCase(TestCase):
         self.assertEqual(self.estudante.cpf, '74299631021')
         self.assertEqual(self.estudante.data_nascimento, '2023-01-01')
         self.assertEqual(self.estudante.celular, '99 99999-9999')
+
+class ModelCursoTestCase(TestCase):
+    def setUp(self):
+        self.curso = Curso.objects.create(
+            codigo = 'PY2026',
+            descricao = 'Python',
+            nivel = 'A'
+        )
+
+    def test_verifica_atributos_do_curso(self):
+        '''Teste que verifica os atributos do modelo do curso'''
+        self.assertEqual(self.curso.codigo, 'PY2026')
+        self.assertEqual(self.curso.descricao, 'Python')
+        self.assertEqual(self.curso.nivel, 'A')

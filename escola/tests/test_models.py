@@ -1,5 +1,5 @@
 from django.test import TestCase
-from escola.models import Estudante, Curso
+from escola.models import Estudante, Curso, Matricula
 
 class ModelEstudanteTestCase(TestCase):
     # def teste_falha(self):
@@ -34,3 +34,31 @@ class ModelCursoTestCase(TestCase):
         self.assertEqual(self.curso.codigo, 'PY2026')
         self.assertEqual(self.curso.descricao, 'Python')
         self.assertEqual(self.curso.nivel, 'A')
+
+class ModelMatriculaTestCase(TestCase):
+    def setUp(self):
+        # Cria as dependências necessárias (Foreign Keys)
+        self.estudante = Estudante.objects.create(
+            nome='Aluno Teste',
+            email='aluno@teste.com',
+            cpf='85191988051',
+            data_nascimento='2000-01-01',
+            celular='11 99999-9999'
+        )
+        self.curso = Curso.objects.create(
+            codigo='TDD01',
+            descricao='Curso de Testes com Django',
+            nivel='A'
+        )
+        # Cria a matrícula alvo do teste
+        self.matricula = Matricula.objects.create(
+            estudante=self.estudante,
+            curso=self.curso,
+            periodo='M'
+        )
+
+    def test_verifica_atributos_matricula(self):
+        '''Verifica se a matrícula linkou corretamente aluno e curso'''
+        self.assertEqual(self.matricula.estudante.cpf, '85191988051')
+        self.assertEqual(self.matricula.curso.codigo, 'TDD01')
+        self.assertEqual(self.matricula.periodo, 'M')

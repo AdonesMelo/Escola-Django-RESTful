@@ -1,6 +1,6 @@
 from django.test import TestCase
-from escola.models import Estudante
-from escola.serializers import EstudanteSerializer
+from escola.models import Estudante, Curso, Matricula
+from escola.serializers import EstudanteSerializer, CursoSerializer, MatriculaSerializer
 
 class SerializerEstudanteTestCase(TestCase):
     def setUp(self):
@@ -27,5 +27,3 @@ class SerializerEstudanteTestCase(TestCase):
         self.assertEqual(dados['cpf'], self.estudante.cpf)
         self.assertEqual(dados['data_nascimento'], self.estudante.data_nascimento)
         self.assertEqual(dados['celular'], self.estudante.celular)
-
-

@@ -3,6 +3,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from escola.models import Curso
+from escola.serializers import CursoSerializer
 
 class CursosTesCase(APITestCase):
     def setUp(self):
@@ -20,7 +21,25 @@ class CursosTesCase(APITestCase):
             nivel = 'I' 
         )
     
-    def test_requisicao_get_para_listar_curso(self):
+    def test_requisicao_get_para_listar_cursos(self):
         '''Teste de requisição GET'''
-        reponse = self.client.get(self.url)
+        reponse = self.client.get(self.url)#/cursos/
         self.assertEqual(reponse.status_code, status.HTTP_200_OK)
+
+    def test_requisicao_get_para_listar_um_curso(self):
+        '''Teste de requisição GET para um curso'''
+        reponse = self.client.get(f'{self.url}1/') #/curso/1/
+        self.assertEqual(reponse.status_code, status.HTTP_200_OK)
+        dados_curso = Curso.objects.get(pk=1)
+        dados_curso_serializados = CursoSerializer(instance=dados_curso).data
+        self.assertEqual(reponse.data, dados_curso_serializados)
+
+    def test_resquisicao_post_para_criar_um_curso(self):
+        '''Teste de requisição POST para um curso'''
+        dados = {
+            'codigo': 'TEST01',
+            'descricao': 'Teste 01',
+            'nivel':'A'
+        }
+        response = self.client.post(self.url, dados)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

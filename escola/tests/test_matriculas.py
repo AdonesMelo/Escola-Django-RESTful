@@ -68,5 +68,20 @@ class MatriculasTesCase(APITestCase):
             'curso': self.curso_01.pk,
             'periodo': 'V'
         }
-        response = self.client.post(self.url, dados)
+        response = self.client.post(self.url, data=dados)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_resquisicao_delete_um_matricula(self):
+        '''Teste de requisição DELETE um matricula, não permitida para atualizar uma matricula'''
+        response = self.client.delete(f'{self.url}2/') # matricula/2/
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_resquisicao_put_para_atualizar_um_matricula(self):
+        '''Teste de requisição POST para um matricula, não permitida para atualizar uma matricula'''
+        dados = {
+            'estudante': self.estudante_01.pk,
+            'curso': self.curso_01.pk,
+            'periodo': 'N'
+        }
+        response = self.client.put(f'{self.url}1/', data=dados)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

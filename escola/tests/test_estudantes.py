@@ -47,5 +47,22 @@ class EstudantesTesCase(APITestCase):
             'data_nascimento': '2020-03-03',
             'celular': '84 88888-3333'
         }
-        response = self.client.post(self.url, dados)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)       
+        response = self.client.post(self.url, data=dados)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_resquisicao_delete_um_estudante(self):
+        '''Teste de requisição DELETE um estudante'''
+        response = self.client.delete(f'{self.url}2/') # estudante/2/
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_resquisicao_put_para_atualizar_um_estudante(self):
+        '''Teste de requisição PUT para um estudante'''
+        dados = {
+            'nome': 'Put',
+            'email': 'testeput@teste.com',
+            'cpf': '93874577023',
+            'data_nascimento': '2021-01-02',
+            'celular': '11 22222-3333'
+        }
+        response = self.client.put(f'{self.url}1/', data=dados)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

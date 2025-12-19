@@ -41,5 +41,20 @@ class CursosTesCase(APITestCase):
             'descricao': 'Teste 01',
             'nivel':'A'
         }
-        response = self.client.post(self.url, dados)
+        response = self.client.post(self.url, data=dados)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_resquisicao_delete_um_curso(self):
+        '''Teste de requisição DELETE um curso'''
+        response = self.client.delete(f'{self.url}2/') # curso/2/
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_resquisicao_put_para_atualizar_um_curso(self):
+        '''Teste de requisição PUT para um curso'''
+        dados = {
+            'codigo': 'TEST01',
+            'descricao': 'TestePut',
+            'nivel':'B'
+        }
+        response = self.client.put(f'{self.url}1/', data=dados)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
